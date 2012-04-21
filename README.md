@@ -69,3 +69,7 @@ idleObserver.at(1000*10, function(){
 Detective Idle checks for the existence of a jQuery-like framework and uses that for element event binding if it exists. If you're not using a framework, it will fallback to addEventListener. So feel free to pass in javascript dom elements or jQuery elements or whatever framework elements you want, just as long they have 'on' or 'bind' methods to use.
 
 I don't really care about supporting older browsers. If you have to support an older browser and you still want to use this script, then include jQuery. I don't want to re-invent event listeners just for a few lines of code.
+
+## Tests
+
+I need to throw in some tests, but everything should be working properly. I think.
