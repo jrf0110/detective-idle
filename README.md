@@ -32,7 +32,3 @@ var idleObserver = new DetectiveIdle(1000*60*10, {
   idleInterval: 1000 // Ticks every second
 });
 ```
-
-## Also, I lied
-
-I just wrote this, so it actually still depends on jquery, but I'll take that out soon. And I also used Backbone.Events, sooo.. it uses that too. But two very easy things to replace.
