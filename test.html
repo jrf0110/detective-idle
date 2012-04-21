@@ -4,11 +4,14 @@
   </head>
   <body>
 
-    <script src="underscore.js"></script>
-    <script src="backbone.js"></script>
     <script src="detective-idle.js"></script>
     <script>
-      var idle = new DetectiveIdle(5000, {idleInterval: 1000});
+      var idle = new DetectiveIdle(5000, {
+        idleInterval: 1000
+      , monitoredEvents: {
+          mousemove: false
+        }
+      });
       idle.at(4000, function(){ console.log ("AT 4000 SECONDS"); });
       idle.at('timeout', function(){ console.log("timed out"); });
       idle.start();

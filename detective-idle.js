@@ -1,39 +1,47 @@
 (function(){
   DetectiveIdle = (function(){
     var el = document, $;
-    var addEvent = function(name, action){
-      console.log(name);
-      console.log(action);
+    var _addEvent = function(name, action){
       return ($ != 'undefined' && $ != null) ? $(el).on(name, action) : el.addEventListener(name, action);
     };
-    // Array Remove - By John Resig (MIT Licensed)
-    var arrayRemoveAt = function(array, from, to) {
-      var rest = array.slice((to || from) + 1 || array.length);
-      array.length = from < 0 ? array.length + from : from;
-      return array.push.apply(array, rest);
+    var _extend = function(obj1, obj2){
+      var obj = {};
+      for (var key in obj1){
+        if (obj2.hasOwnProperty(key)){
+          if (typeof obj1[key] == "object") obj[key] = _extend(obj1[key], obj2[key]);
+          else obj[key] = obj2[key];
+        }else{
+          obj[key] = obj1[key];
+        }
+      }
+      return obj;
+    };
+    var defaults = {
+      idleInterval: 60000
+    , monitoredEvents: {
+        mousemove: true
+      , click: true
+      , touchmove: true
+      , touhstart: true
+      , keypress: true
+      }
     };
     var constructor = function(timeout, options){
       this.timeout = timeout;
-      this.options = _.extend({
-        idleInterval: 60000
-      , monitoredEvents: {
-          mousemove: true
-        , click: true
-        , touchmove: true
-        , touhstart: true
-        , keypress: true
-        }
-      }, options);
+      this.options = _extend(defaults, options);
       this.idle = 0;
       this.idleInterval = this.options.idleInterval;
       this.interval = false;
+      this.events = {};
       this.eventTimes = [];
       this.eventTimesFired = [];
-      var self = this, boundReset = _.bind(this.reset, this);
+      var self = this, boundReset = function(){ self.reset(); };
 
       for (var key in this.options.monitoredEvents){
-        this.options.monitoredEvents[key] && addEvent(key, boundReset);
+        this.options.monitoredEvents[key] && _addEvent(key, boundReset);
       }
+
+      console.log(this);
 
       return this;
     };
@@ -51,10 +59,31 @@
         typeof time != "string" && this.eventTimes.push(time); // just a normal on function at this point
         return this;
       }
+    , on: function(name, action){
+        if (Object.prototype.toString.call(action)[8] != "F") throw new TypeError;
+        if (this.events.hasOwnProperty(name)){
+          this.events[name].push(action);
+        }else{
+          this.events[name] = [action];
+        }
+        return this;
+      }
+    , trigger: function(name, args){
+        if (this.events.hasOwnProperty(name)){
+          var e = this.events[name], i = 0;
+          for (; i < e.length; i++){
+            e[i].apply(this, args);
+          }
+        }
+        return this;
+      }
     , triggerWarning: function(i){
         this.trigger(this.eventTimes[i] + "", this);
         this.eventTimesFired.push(this.eventTimes[i]);
-        arrayRemoveAt(this.eventTimes, i);
+        // Array Remove - By John Resig (MIT Licensed)
+        var rest = this.eventTimes.slice(i + 1);
+        this.eventTimes.length = i;
+        this.eventTimes.push.apply(this.eventTimes, rest);
         return this;
       }
     , onTick: function(){
@@ -68,7 +97,8 @@
         }
     }
     , start: function(){
-        !this.interval && (this.interval = setInterval(_.bind(this.onTick, this), this.idleInterval));
+        var self = this;
+        !this.interval && (this.interval = setInterval(function(){self.onTick()}, this.idleInterval));
         return this;
       }
     , stop: function(){
@@ -78,7 +108,6 @@
         return this;
       }
     };
-    _.extend(constructor.prototype, Backbone.Events);
     return constructor;
   })();
 }).call(this);
