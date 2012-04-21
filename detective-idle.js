@@ -1,5 +1,5 @@
 (function(){
-  IdleObserver = (function(){
+  DetectiveIdle = (function(){
     var $el = $(document);
     var constructor = function(timeout, options){
       this.timeout = timeout;
