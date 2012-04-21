@@ -1,32 +1,32 @@
 (function(){
-  DetectiveIdle = (function(){
-    var $, $framework = ($ != 'undefined' && $ != null), bindFn = ($framework && $.hasOwnKey('on')) ? 'on' : 'bind'
-    , _addEvent = function(el, name, action){
-      return $framework ? $(el)._on(name, action) : el.addEventListener(name, action);
+  var $, $framework = ($ != 'undefined' && $ != null), bindFn = ($framework && $.hasOwnKey('on')) ? 'on' : 'bind'
+  , _addEvent = function(el, name, action){
+    return $framework ? $(el)._on(name, action) : el.addEventListener(name, action);
+  }
+  , _extend = function(obj1, obj2){
+    var obj = {};
+    for (var key in obj1){
+      if (obj2.hasOwnProperty(key)){
+        if (typeof obj1[key] == "object" && key != "el") obj[key] = _extend(obj1[key], obj2[key]);
+        else obj[key] = obj2[key];
+      }else{
+        obj[key] = obj1[key];
+      }
     }
-    , _extend = function(obj1, obj2){
-      var obj = {};
-      for (var key in obj1){
-        if (obj2.hasOwnProperty(key)){
-          if (typeof obj1[key] == "object" && key != "el") obj[key] = _extend(obj1[key], obj2[key]);
-          else obj[key] = obj2[key];
-        }else{
-          obj[key] = obj1[key];
-        }
-      }
-      return obj;
-    };
-    var defaults = {
-      idleInterval: 60000
-    , el: document
-    , monitoredEvents: {
-        mousemove: true
-      , click: true
-      , touchmove: true
-      , touchstart: true
-      , keypress: true
-      }
-    };
+    return obj;
+  };
+  var defaults = {
+    idleInterval: 60000
+  , el: document
+  , monitoredEvents: {
+      mousemove: true
+    , click: true
+    , touchmove: true
+    , touchstart: true
+    , keypress: true
+    }
+  };
+  DetectiveIdle = (function(){
     var constructor = function(timeout, options){
       this.timeout = timeout;
       this.options = _extend(defaults, options);
