@@ -1,7 +1,7 @@
 (function(){
   var $, $framework = ($ != 'undefined' && $ != null), bindFn = ($framework && $.hasOwnKey('on')) ? 'on' : 'bind'
   , _addEvent = function(el, name, action){
-    return $framework ? $(el)._on(name, action) : el.addEventListener(name, action);
+    return $framework ? $(el).on(name, action) : el.addEventListener(name, action);
   }
   , _extend = function(obj1, obj2){
     var obj = {};
