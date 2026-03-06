@@ -1,4 +1,4 @@
-# Idle detection in plain ol' Javascript
+# 🕵️ Idle detection in plain ol' Javascript
 
 Detective Idle is a dead simple way of executing actions for when a user is inactive for certain periods of time. Here's how to use it:
 
@@ -21,15 +21,15 @@ idleObserver.at(1000*60*4 + 1000*30, function(){
 });
 ```
 
-## More Options
+## ⚙️ More Options
 
 Detective Idle sets some options that you can override. Stuff like how often it checks for events and what events should constitute as activity. By default, it checks for events every minute and the events it checks for are:
 
-* mousemove
-* click
-* touchmove
-* touchstart
-* keypress
+* 🖱️ mousemove
+* 🖱️ click
+* 👆 touchmove
+* 👆 touchstart
+* ⌨️ keypress
 
 
 ```javascript
@@ -43,7 +43,7 @@ var idleObserver = new DetectiveIdle(1000*60*10, {
 });
 ```
 
-## More Usage
+## 📖 More Usage
 
 By default, Detective Idle is bound to the document element, but you can just as easily pass in another element. For example, maybe you're wanting to record some information about somebody's typing habits. In which case, you're really only concerned about exact times of inactivity and not necessarily a timeout.
 
@@ -64,12 +64,12 @@ idleObserver.at(1000*10, function(){
 });
 ```
 
-## Using with frameworks
+## 🔌 Using with frameworks
 
 Detective Idle checks for the existence of a jQuery-like framework and uses that for element event binding if it exists. If you're not using a framework, it will fallback to addEventListener. So feel free to pass in javascript dom elements or jQuery elements or whatever framework elements you want, just as long they have 'on' or 'bind' methods to use.
 
 I don't really care about supporting older browsers. If you have to support an older browser and you still want to use this script, then include jQuery. I don't want to re-invent event listeners just for a few lines of code.
 
-## Tests
+## 🧪 Tests
 
 I need to throw in some tests, but everything should be working properly. I think.
